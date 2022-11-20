@@ -1,3 +1,10 @@
+let playerState = "run";
+const dropdown = document.getElementById("animations");
+
+dropdown.addEventListener("change", function(e) {
+    playerState = e.target.value;
+});
+
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
 const CANVAS_WIDTH = canvas.width = 600;
@@ -49,7 +56,7 @@ let animationStates = [
         frames: 12
     },
     {
-        name: "getHit",
+        name: "gethit",
         frames: 4
     }
 ];
@@ -70,9 +77,9 @@ console.log(spriteAnimations);
 
 function animate() {
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    let position = Math.floor(gameFrame / staggeredFrame) % spriteAnimations["run"].loc.length;
+    let position = Math.floor(gameFrame / staggeredFrame) % spriteAnimations[playerState].loc.length;
     let frameX = position * spriteWidth;
-    let frameY = spriteAnimations["run"].loc[position].y;
+    let frameY = spriteAnimations[playerState].loc[position].y;
     ctx.drawImage(playerImage, frameX, frameY, spriteWidth, spriteHeight, 0, 0, spriteWidth, spriteHeight);
     gameFrame++;
     requestAnimationFrame(animate);
