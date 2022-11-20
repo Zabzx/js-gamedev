@@ -1,87 +1,33 @@
-let playerState = "run";
-const dropdown = document.getElementById("animations");
-
-dropdown.addEventListener("change", function(e) {
-    playerState = e.target.value;
-});
-
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
-const CANVAS_WIDTH = canvas.width = 600;
-const CANVAS_HEIGHT = canvas.height = 600;
+const CANVAS_WIDTH = canvas.width = 800;
+const CANVAS_HEIGHT = canvas.height = 700;
 
-const playerImage = new Image();
-playerImage.src = "./sprites/shadow_dog.png";
-const spriteWidth = 575;
-const spriteHeight = 523;
-let gameFrame = 0;
-let staggeredFrame = 5;
+let gameSpeed = 15;
 
-let spriteAnimations = [];
-let animationStates = [
-    {
-        name: "idle",
-        frames: 7
-    },
-    {
-        name: "jump",
-        frames: 7
-    },
-    {
-        name: "fall",
-        frames: 9
-    },
-    {
-        name: "run",
-        frames: 9
-    },
-    {
-        name: "dizzy",
-        frames: 11
-    },
-    {
-        name: "sit",
-        frames: 5
-    },
-    {
-        name: "roll",
-        frames: 7,
-    },
-    {
-        name: "bite",
-        frames: 7
-    },
-    {
-        name: "ko",
-        frames: 12
-    },
-    {
-        name: "gethit",
-        frames: 4
-    }
-];
-animationStates.forEach((state, index) => {
-    let frames = {
-        loc: [],
-    }
+const backGroundLayer1 = new Image();
+backGroundLayer1.src = "./sprites/layer-1.png";
+const backGroundLayer2 = new Image();
+backGroundLayer2.src = "./sprites/layer-2.png";
+const backGroundLayer3 = new Image();
+backGroundLayer3.src = "./sprites/layer-3.png";
+const backGroundLayer4 = new Image();
+backGroundLayer4.src = "./sprites/layer-4.png";
+const backGroundLayer5 = new Image();
+backGroundLayer5.src = "./sprites/layer-5.png";
 
-    for (let i = 0; i < state.frames; i++ ) {
-        let positionX = i * spriteWidth;
-        let positionY = index * spriteHeight;
-
-        frames.loc.push({ x: positionX, y: positionY });
-    }
-    spriteAnimations[state.name] = frames;
-});
-console.log(spriteAnimations);
+let x = 0;
+let x2 = 2400;
 
 function animate() {
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    let position = Math.floor(gameFrame / staggeredFrame) % spriteAnimations[playerState].loc.length;
-    let frameX = position * spriteWidth;
-    let frameY = spriteAnimations[playerState].loc[position].y;
-    ctx.drawImage(playerImage, frameX, frameY, spriteWidth, spriteHeight, 0, 0, spriteWidth, spriteHeight);
-    gameFrame++;
+    ctx.drawImage(backGroundLayer4, x, 0);
+    ctx.drawImage(backGroundLayer4, x2, 0);
+
+    if (x < -2400) x = 2400;
+    else x -= gameSpeed;
+    if (x2 < -2400) x2 = 2400;
+    else x2 -= gameSpeed;
     requestAnimationFrame(animate);
 }
 animate();
