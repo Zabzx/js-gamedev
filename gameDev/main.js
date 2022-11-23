@@ -5,29 +5,48 @@ const CANVAS_HEIGHT = canvas.height = 700;
 
 let gameSpeed = 15;
 
-const backGroundLayer1 = new Image();
-backGroundLayer1.src = "./sprites/layer-1.png";
-const backGroundLayer2 = new Image();
-backGroundLayer2.src = "./sprites/layer-2.png";
-const backGroundLayer3 = new Image();
-backGroundLayer3.src = "./sprites/layer-3.png";
-const backGroundLayer4 = new Image();
-backGroundLayer4.src = "./sprites/layer-4.png";
-const backGroundLayer5 = new Image();
-backGroundLayer5.src = "./sprites/layer-5.png";
+const backgroundLayer4 = new Image();
+backgroundLayer4.src = "./sprites/layer-4.png";
 
-let x = 0;
-let x2 = 2400;
+class Layer {
+    constructor(image, speedModifier) {
+        this.x = 0;
+        this.y = 0;
+        this.width = 2400;
+        this.height = 700;
+        this.x2 = this.width;
+        this.image = image;
+        this.speedModifier = speedModifier;
+        this.speed = gameSpeed * this.speedModifier;
+    }
+
+    update() {
+        this.speed = gameSpeed * this.speedModifier;
+
+        if (this.x <= -this.width) {
+            this.x = this.width + this.x2 - this.speed;
+        }
+
+        if (this.x2 <= -this.width) {
+            this.x2 = this.width + this.x - this.speed;
+        }
+
+        this.x = Math.floor(this.x - this.speed);
+        this.x2 = Math.floor(this.x2 - this.speed);
+    }
+
+    draw() {
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        ctx.drawImage(this.image, this.x2, this.y, this.width, this.height);
+    }
+}
+
+const layer4 = new Layer(backgroundLayer4, 2);
 
 function animate() {
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    ctx.drawImage(backGroundLayer4, x, 0);
-    ctx.drawImage(backGroundLayer4, x2, 0);
-
-    if (x < -2400) x = 2400;
-    else x -= gameSpeed;
-    if (x2 < -2400) x2 = 2400;
-    else x2 -= gameSpeed;
+    layer4.update();
+    layer4.draw();
     requestAnimationFrame(animate);
 }
 animate();
